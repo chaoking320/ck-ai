@@ -1,0 +1,48 @@
+# ---- 基础工具 ----
+numpy>=1.24.0,<2.0.0
+pandas>=2.0.0
+requests>=2.31.0
+
+# ---- LLM + RAG 工具（核心） ----
+langchain>=0.2.0
+langchain-community>=0.2.0
+langchain-core>=0.2.0
+langchain-text-splitters>=0.2.0
+chromadb>=0.5.0
+sentence-transformers>=3.0.0
+qdrant-client>=1.9.0
+
+# ---- Embedding 模型 ----
+huggingface-hub>=0.23.0
+
+# ---- Rerank 模型 ----
+cohere>=5.4.0
+
+# ---- 文档解析 ----
+pypdf>=4.0.0
+python-docx>=1.1.0
+python-pptx>=0.6.0
+beautifulsoup4>=4.12.0
+
+# ---- 图片转文字（OCR） ----
+pytesseract>=0.3.10
+Pillow>=10.0.0
+
+# ---- 语音转文字（ASR） ----
+faster-whisper>=1.0.0
+openai-whisper>=20231117
+
+# ---- 文字转语音（TTS） ----
+pyttsx3>=2.90
+edge-tts>=6.1.0
+pydub>=0.25.0
+
+# ---- 多模态支持 ----
+opencv-python>=4.8.0
+
+# ---- Web API / 服务 ----
+fastapi>=0.110.0
+uvicorn>=0.30.0
+
+# ---- Ollama 客户端 ----
+ollama>=0.3.0
