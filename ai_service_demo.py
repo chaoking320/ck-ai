@@ -5,6 +5,7 @@ AI 服务集合示例代码
 
 import os
 from typing import List, Optional
+from deepdoc.rednote_parser import rednote_vision_model
 
 # ============ 1. 聊天模型（Ollama） ============
 class ChatService:
@@ -195,55 +196,73 @@ class Image2TextService:
                 )
             return response['message']['content']
 
+# =========== 7. 小红书OCR ============
+class RedNoteOCRService:
+    def __init__(self):
+        self.model = rednote_vision_model()
+
+    def extract_text(self, image_path: str) -> str:
+        """从图片提取文字"""
+        text, i = self.model.describe(image_path)
+        return text, i
 
 # ============ 使用示例 ============
 if __name__ == "__main__":
 
     # 注意：示例的模型需要提前下载安装，方式有多种（ollama、huggingface、本地安装等）
 
-    # 1. 聊天
-    print("=== 聊天模型测试 ===")
-    chat = ChatService()
-    response = chat.chat("你好，请介绍一下自己")
-    print(f"回复: {response}\n")
+    # # 1. 聊天
+    # print("=== 聊天模型测试 ===")
+    # chat = ChatService()
+    # response = chat.chat("你好，请介绍一下自己")
+    # print(f"回复: {response}\n")
+    #
+    # # 2. 嵌入
+    # print("=== 嵌入模型测试 ===")
+    # # 使用 sentence-transformers（不需要额外下载 ollama 模型）
+    # # embedding = EmbeddingService(method="sentence-transformers")
+    # embedding = EmbeddingService()
+    # vectors = embedding.embed(["你好世界", "Hello World"])
+    # print(f"向量维度: {len(vectors[0])}\n")
+    #
+    # # 3. Rerank
+    # print("=== Rerank 模型测试 ===")
+    # rerank = RerankService(method="local")
+    # docs = [
+    #     "Python 是一种编程语言",
+    #     "今天天气很好",
+    #     "机器学习是人工智能的一个分支"
+    # ]
+    # results = rerank.rerank("什么是编程", docs, top_k=2)
+    # print(f"最相关文档: {results[0]['text']}\n")
+    #
+    # # 4. ASR
+    # print("=== ASR 测试 ===")
+    # asr = Speech2TextService()
+    # txt = asr.transcribe("test_output.mp3")
+    # print(f"语音转文档已输出: {txt}\n")
+    #
+    # # 5. TTS
+    # print("=== TTS 测试 ===")
+    # tts = Text2SpeechService(method="pyttsx3")
+    # tts.speak("你好，这是一个测试", output_file="test_output.mp3")
+    # print("语音已保存到 test_output.mp3\n")
+    #
+    # # 6. OCR
+    # import base64
+    # print("=== OCR 测试 ===")
+    # ocr = Image2TextService()
+    # txt = ocr.extract_text("hello_ai.png")
+    # print(f"图片转文档已输出: {txt}\n")
 
-    # 2. 嵌入
-    print("=== 嵌入模型测试 ===")
-    # 使用 sentence-transformers（不需要额外下载 ollama 模型）
-    # embedding = EmbeddingService(method="sentence-transformers")
-    embedding = EmbeddingService()
-    vectors = embedding.embed(["你好世界", "Hello World"])
-    print(f"向量维度: {len(vectors[0])}\n")
-
-    # 3. Rerank
-    print("=== Rerank 模型测试 ===")
-    rerank = RerankService(method="local")
-    docs = [
-        "Python 是一种编程语言",
-        "今天天气很好",
-        "机器学习是人工智能的一个分支"
-    ]
-    results = rerank.rerank("什么是编程", docs, top_k=2)
-    print(f"最相关文档: {results[0]['text']}\n")
-
-    # 4. ASR
-    print("=== ASR 测试 ===")
-    asr = Speech2TextService()
-    txt = asr.transcribe("test_output.mp3")
-    print(f"语音转文档已输出: {txt}\n")
-
-    # 5. TTS
-    print("=== TTS 测试 ===")
-    tts = Text2SpeechService(method="pyttsx3")
-    tts.speak("你好，这是一个测试", output_file="test_output.mp3")
-    print("语音已保存到 test_output.mp3\n")
-
-    # 6. OCR
-    import base64
-    print("=== OCR 测试 ===")
-    ocr = Image2TextService()
-    txt = ocr.extract_text("hello_ai.png")
-    print(f"图片转文档已输出: {txt}\n")
+    # # 7. 小红书OCR
+    # print("=== 小红书OCR 测试 ===")
+    # rednote = RedNoteOCRService()
+    #
+    # from PIL import Image
+    # image = Image.open("hello_ai.png")
+    # result, tokens = rednote.extract_text(image)
+    # print(f"图片转文档已输出: {result}\n Tokens used: {tokens}\n")
 
     # 注意：ASR 和 Image2Text 需要实际的音频/图片文件才能测试
     print("其他服务需要实际文件进行测试")
