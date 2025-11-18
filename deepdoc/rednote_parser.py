@@ -78,19 +78,18 @@ class rednote_vision_model():
         return img_base64
 
     def prompt(self, base64_image):
-        """Generate basic prompt for image description"""
         return [
             {
-                "role": "user",
-                "content": [
+                "role": "user",  # 表示这是用户发送的消息
+                "content": [  # 消息内容包含两部分
                     {
-                        "type": "text",
-                        "text": "Please describe this image in detail."
+                        "type": "text",  # 文本部分
+                        "text": "Please describe this image in detail."  # 给AI的指令
                     },
                     {
-                        "type": "image_url",
+                        "type": "image_url",  # 图像部分
                         "image_url": {
-                            "url": f"data:image/png;base64,{base64_image}"
+                            "url": f"data:image/png;base64,{base64_image}"  # Base64格式的图片数据
                         }
                     }
                 ]

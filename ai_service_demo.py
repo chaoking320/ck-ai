@@ -255,14 +255,15 @@ if __name__ == "__main__":
     # txt = ocr.extract_text("hello_ai.png")
     # print(f"图片转文档已输出: {txt}\n")
 
-    # # 7. 小红书OCR
-    # print("=== 小红书OCR 测试 ===")
-    # rednote = RedNoteOCRService()
-    #
-    # from PIL import Image
+    # 7. 小红书OCR
+    print("=== 小红书OCR 测试 ===")
+    rednote = RedNoteOCRService()
+
+    from PIL import Image
     # image = Image.open("hello_ai.png")
-    # result, tokens = rednote.extract_text(image)
-    # print(f"图片转文档已输出: {result}\n Tokens used: {tokens}\n")
+    image = Image.open("table.png")
+    result, tokens = rednote.extract_text(image)
+    print(f"图片转文档已输出: {result}\n Tokens used: {tokens}\n")
 
     # 注意：ASR 和 Image2Text 需要实际的音频/图片文件才能测试
     print("其他服务需要实际文件进行测试")
