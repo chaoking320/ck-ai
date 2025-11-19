@@ -3,3 +3,4 @@ ck-ai
 models
 deepdoc/__pycache__
 __pycache__
+api/chroma_db

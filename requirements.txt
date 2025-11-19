@@ -26,6 +26,7 @@ pypdf>=4.0.0
 python-docx>=1.1.0
 python-pptx>=0.6.0
 beautifulsoup4>=4.12.0
+PyPDF2>=3.0.0
 
 # ---- 图片转文字（OCR） ----
 pytesseract>=0.3.10
@@ -46,6 +47,7 @@ opencv-python>=4.8.0
 # ---- Web API / 服务 ----
 fastapi>=0.110.0
 uvicorn>=0.30.0
+python-multipart>=0.0.9
 
 # ---- Ollama 客户端 ----
 ollama>=0.3.0
