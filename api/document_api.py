@@ -49,6 +49,7 @@ class SearchRequest(BaseModel):
     """搜索请求模型"""
     query: str
     n_results: Optional[int] = 5
+    distance_threshold: Optional[float] = 0.6
 
 
 class SearchResult(BaseModel):
@@ -114,7 +115,15 @@ async def search_documents(request: SearchRequest):
         搜索结果列表
     """
     try:
-        results = doc_processor.search_documents(request.query, request.n_results)
+        # 检查查询是否为空
+        if not request.query or not request.query.strip():
+            return []
+        
+        results = doc_processor.search_documents(
+            request.query, 
+            request.n_results,
+            request.distance_threshold
+        )
         return [SearchResult(**result) for result in results]
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

@@ -146,21 +146,19 @@
         
         async function searchDocuments() {
             const queryInput = document.getElementById('searchQuery');
+            const resultsDiv = document.getElementById('searchResults');
             const countInput = document.getElementById('resultCount');
-            const statusDiv = document.getElementById('searchStatus');
-            const resultsDiv = document.getElementById('results');
             
             const query = queryInput.value.trim();
-            const nResults = parseInt(countInput.value) || 5;
+            const count = parseInt(countInput.value) || 5;
             
             if (!query) {
-                showStatus(statusDiv, '请输入搜索关键词', 'error');
+                showStatus(document.getElementById('searchStatus'), '请输入查询内容', 'error');
                 return;
             }
             
             try {
-                showStatus(statusDiv, '正在搜索...', 'success');
-                resultsDiv.innerHTML = '';
+                showStatus(document.getElementById('searchStatus'), '搜索中...', 'success');
                 
                 const response = await fetch(`${API_BASE}/search/`, {
                     method: 'POST',
@@ -169,20 +167,21 @@
                     },
                     body: JSON.stringify({
                         query: query,
-                        n_results: nResults
+                        n_results: count,
+                        distance_threshold: 0.6  // 添加距离阈值
                     })
                 });
                 
                 if (response.ok) {
                     const results = await response.json();
                     displayResults(results);
-                    showStatus(statusDiv, `找到 ${results.length} 个相关结果`, 'success');
+                    showStatus(document.getElementById('searchStatus'), `找到 ${results.length} 条结果`, 'success');
                 } else {
                     const error = await response.json();
-                    showStatus(statusDiv, `搜索失败: ${error.detail}`, 'error');
+                    showStatus(document.getElementById('searchStatus'), `搜索失败: ${error.detail}`, 'error');
                 }
             } catch (error) {
-                showStatus(statusDiv, `搜索出错: ${error.message}`, 'error');
+                showStatus(document.getElementById('searchStatus'), `搜索出错: ${error.message}`, 'error');
             }
         }
         

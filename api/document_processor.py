@@ -188,17 +188,26 @@ class DocumentProcessor:
             "source": file_path
         }
     
-    def search_documents(self, query: str, n_results: int = 5) -> List[Dict[str, Any]]:
+    def search_documents(self, query: str, n_results: int = 5, distance_threshold: float = 0.6) -> List[Dict[str, Any]]:
         """
         搜索相关文档
         
         Args:
             query: 查询语句
             n_results: 返回结果数量
+            distance_threshold: 距离阈值，低于此值的结果将被过滤掉（越小越相似）
             
         Returns:
             搜索结果列表
         """
+        # 检查查询是否为空
+        if not query or not query.strip():
+            return []
+        
+        # 检查集合是否为空
+        if self.collection.count() == 0:
+            return []
+        
         # 生成查询嵌入向量
         query_embedding = self.embedding_model.encode([query]).tolist()
         
@@ -208,15 +217,18 @@ class DocumentProcessor:
             n_results=n_results
         )
         
-        # 格式化结果
+        # 格式化结果并应用距离阈值过滤
         formatted_results = []
         for i in range(len(results['ids'][0])):
-            formatted_results.append({
-                "id": results['ids'][0][i],
-                "document": results['documents'][0][i],
-                "metadata": results['metadatas'][0][i],
-                "distance": results['distances'][0][i] if 'distances' in results else None
-            })
+            distance = results['distances'][0][i] if 'distances' in results else None
+            # 如果距离为None或者小于阈值，则添加到结果中
+            if distance is None or distance <= distance_threshold:
+                formatted_results.append({
+                    "id": results['ids'][0][i],
+                    "document": results['documents'][0][i],
+                    "metadata": results['metadatas'][0][i],
+                    "distance": distance
+                })
             
         return formatted_results
 
